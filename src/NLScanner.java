@@ -13,14 +13,14 @@ class NLScanner{
 	public void useDelimiter(String pattern){
 		scanner.useDelimiter(pattern);
 	}
+	public boolean hasNext(){
+		return scanner.hasNext();
+	}
 	public String next(){
 		while(q.isEmpty()){
 			
 			String next = scanner.next();
-//			System.out.println("before next"+next+"!!");
 			next = next.replaceAll("\\r?\\n", " /n ");
-//			System.out.println("after next"+next+"!!");
-
 			String[] arr = next.split(" ");
 			for(String s :arr){
 				if(!s.trim().isEmpty())
@@ -28,13 +28,10 @@ class NLScanner{
 			}
 		}
 		String result = q.remove();
-//		System.out.println("result b4 "+result);
 		if(result.equals("/n") == false && result.contains("/n")){
-//			System.out.println("in here");
 			result = result.replaceAll("/n", "");
 		}
 		result = result.equals("/n") ? "\n" : result;
-//		System.out.println("final res: "+result+"..");
 		return  result;
 	}
 }

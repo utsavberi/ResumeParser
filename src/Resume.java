@@ -23,9 +23,12 @@ public class Resume {
 	String email;
 	String phone;
 	String links;
+	String educationString="";
+	String experienceString="";
+	String skillsString="";
 	ArrayList<String> skills = new ArrayList<String>();
 	ArrayList<Education> education = new ArrayList<Education>();
-	ArrayList<Experience> experiences = new ArrayList<>();
+	ArrayList<Experience> experience = new ArrayList<>();
 	ArrayList<String> projects = new ArrayList<String>();
 	ArrayList<String> achievements = new ArrayList<>();
 	
@@ -33,6 +36,10 @@ public class Resume {
 	public String toString(){
 		return "{ Name : "+name+" , address : "+address+" , email : "+email
 				+" , phone : "+phone+" , links : "+links
+				+" , educationStr : <<"+educationString
+				+">> experienceStr : <<"+experienceString
+				+">> , skillsStr : <<"+skillsString
+				+">>"
 				+"}";
 	}
 }

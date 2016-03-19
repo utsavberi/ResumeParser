@@ -11,21 +11,20 @@ public class ResumeParser {
 	}
 	
 	public void parse(){
-		if(count++>20){
-			System.out.println(resume);
-			return;
-			}
+
 		lexer.lex();
+		
 		if(lexer.getCurrentToken().tokenType == TokenType.EOF){
+			System.out.println(resume);
 			return;
 		}
 
 		 if(resume.name==null && lexer.getCurrentToken().tokenType == TokenType.NAME){
 			lexer.lex(); //lex name token
-			personalInfo();
+			parseName();
 		}
 		 else if(resume.name == null){
-			personalInfo();
+			parseName();
 		}
 		 else if(resume.email==null && lexer.getCurrentToken().tokenType == TokenType.EMAIL){
 			lexer.lex();
@@ -48,12 +47,92 @@ public class ResumeParser {
 		 else if(lexer.getCurrentToken().tokenType == TokenType.URL_BODY){
 			 parseUrl();
 		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.EDUCATION_HEADER){
+			 lexer.lex();
+			 parseEducation();
+		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.EXPERIENCE_HEADER){
+			 lexer.lex();
+			 parseExperience();
+		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.SKILLS_HEADER){
+			 lexer.lex();
+			 parseSkills();
+		 }
 		parse();
 		
 	}
 
-	private void parseUrl() {
+	private void parseSkills() {
+		while(lexer.getCurrentToken().tokenType==TokenType.ALPHA ||
+				lexer.getCurrentToken().tokenType==TokenType.ALPHA_NUMERIC ||
+				lexer.getCurrentToken().tokenType==TokenType.NUMERIC || 
+				lexer.getCurrentToken().tokenType == TokenType.NEW_LINE){
+			resume.skillsString+=lexer.getCurrentToken().value+" ";
+			lexer.lex();
+		}
+		if(lexer.getCurrentToken().tokenType == TokenType.EDUCATION_HEADER){
+			 lexer.lex();
+			 parseEducation();
+		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.EXPERIENCE_HEADER){
+			 lexer.lex();
+			 parseExperience();
+		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.SKILLS_HEADER){
+			 lexer.lex();
+			 parseSkills();
+		 }
+	}
+
+	private void parseExperience() {
+		while(lexer.getCurrentToken().tokenType==TokenType.ALPHA ||
+				lexer.getCurrentToken().tokenType==TokenType.ALPHA_NUMERIC ||
+				lexer.getCurrentToken().tokenType==TokenType.NUMERIC||
+				lexer.getCurrentToken().tokenType == TokenType.NEW_LINE){
+			resume.experienceString+=lexer.getCurrentToken().value+" ";
+			lexer.lex();
+		}
+		if(lexer.getCurrentToken().tokenType == TokenType.EDUCATION_HEADER){
+			 lexer.lex();
+			 parseEducation();
+		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.EXPERIENCE_HEADER){
+			 lexer.lex();
+			 parseExperience();
+		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.SKILLS_HEADER){
+			 lexer.lex();
+			 parseSkills();
+		 }
 		
+	}
+
+	private void parseEducation() {
+		System.out.println("in edu  >>>>>>>>>>>>>>>>>>>>>");
+		while(lexer.getCurrentToken().tokenType==TokenType.ALPHA ||
+				lexer.getCurrentToken().tokenType==TokenType.ALPHA_NUMERIC ||
+				lexer.getCurrentToken().tokenType==TokenType.NUMERIC||
+				lexer.getCurrentToken().tokenType == TokenType.NEW_LINE){
+			resume.educationString+=lexer.getCurrentToken().value.replaceAll("\\r?\n", " ")+" ";
+			lexer.lex();
+		}
+		if(lexer.getCurrentToken().tokenType == TokenType.EDUCATION_HEADER){
+			 lexer.lex();
+			 parseEducation();
+		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.EXPERIENCE_HEADER){
+			 lexer.lex();
+			 parseExperience();
+		 }
+		 else if(lexer.getCurrentToken().tokenType == TokenType.SKILLS_HEADER){
+			 lexer.lex();
+			 parseSkills();
+		 }
+		
+	}
+
+	private void parseUrl() {
 		resume.links = lexer.getCurrentToken().value;		
 		
 	}
@@ -67,12 +146,10 @@ public class ResumeParser {
 		resume.email = lexer.getCurrentToken().value;		
 	}
 
-	private void personalInfo() {
+	private void parseName() {
 		resume.name = lexer.getCurrentToken().value;
 		lexer.lex();
 		resume.name +=lexer.getCurrentToken().value;
-//		System.out.println("Name"+resume.name);
-//		System.out.println(lexer.getCurrentToken().tokenType);
 	}
 
 

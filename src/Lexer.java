@@ -1,14 +1,10 @@
-import java.io.DataInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
 
 
 enum TokenType{
 	NAME, EMAIL, ADDRESS, URL, URL_BODY, PHONE, EMAIL_BODY, 
-	ALPHA, NUMERIC, ALPHA_NUMERIC, NEW_LINE, EOF, PHONE_HEADER
+	ALPHA, NUMERIC, ALPHA_NUMERIC, NEW_LINE, EOF, PHONE_HEADER, 
+	EDUCATION_HEADER, EXPERIENCE_HEADER, SKILLS_HEADER
 }
 
 class Token{
@@ -40,6 +36,10 @@ public class Lexer {
 		return token;
 	}
 	public void lex(){
+		if(scanner.hasNext()==false){
+			token = new Token("EOF",TokenType.EOF);
+			return;
+		}
 		String word = scanner.next();
 		
 		if(word.equals("\n")){
@@ -71,6 +71,17 @@ public class Lexer {
 			token = new Token(word,TokenType.PHONE);
 
 		}
+		else if(word.equalsIgnoreCase("education")){
+			token = new Token(word,TokenType.EDUCATION_HEADER);
+		}
+		else if(word.equalsIgnoreCase("experience"))
+		{
+			token = new Token(word,TokenType.EXPERIENCE_HEADER);
+		}
+		else if(word.equalsIgnoreCase("skill")||word.equalsIgnoreCase("skills")||word.equalsIgnoreCase("keywords")){
+			token = new Token(word,TokenType.SKILLS_HEADER);
+		}
+		
 		else if(isNumeric(word)){
 			token = new Token(word,TokenType.NUMERIC);
 		}
