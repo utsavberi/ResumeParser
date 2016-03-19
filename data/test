@@ -1,0 +1,163 @@
+Utsav Beri
+1235 Wildwood Avenue, Sunnyvale, California - 94089
+716-495-8194 Email: utsavber@buffalo.edu
+Web: www.linkedin.com/in/utsavberi , https://github.com/utsavberi
+
+TECHNICAL SKILLS
+Languages
+Java, C#, C, C++, Python, PHP, ML, Pig, Hive
+Frameworks
+Jersey, Entity, JUnit, MVC 3, WCF, nodeJs, AngularJs, Hadoop, Hibernate, Spring
+Databases
+Oracle SQL, MS SQL, MySQL, MongoDB
+
+
+
+
+EDUCATION
+
+
+
+
+University at Buffalo - SUNY, NY, USA
+
+
+Graduation in Dec 2015
+Master of Science in Computer Science, 3.74/4 GPA
+
+
+
+
+Guru Gobind Singh Indraprastha University, Delhi, India
+
+
+2010 - 2013
+Master in Computer Application
+
+
+
+
+
+
+Delhi University, Delhi, India
+
+
+2007 - 2010
+Bachelor of Science (Hons.), Computer Science
+
+
+
+
+
+
+
+  EXPERIENCE
+
+
+Untitled Collective Inc. ( SDE Intern )
+LA, California
+
+
+Jun 2015 - Jul 2015
+Developed cross domain recommendation engine which enabled users discover and share interests in	 music, movies, TV shows, books. Technologies: python,  NodeJs, AWS, Angular, javascript, CSS
+
+Indus Valley Partners ( Software Engineer, RAD Team )
+Jan 2013 - Aug 2014
+Common Task Manager
+Asp.Net, C#, WCF, javascript, CSS
+Developed software for integrating the various task managers for all IVP products using full duplex WCF.
+Included - graphically chain tasks,on fail run sub task or resume next,run parallel tasks, cycle detection
+
+Rule Engine
+Java, MVEl, Jersey, AngularJs, CSS
+Developed module that could parse custom rules written by end users in the form of if-then-else and generate code based on them. It also featured code completion and error detection
+
+Independant Projects
+
+
+
+
+
+
+ID Card Suite (using C#) - ID Card designer/producer software for event management company “MUI Lmt.”
+
+seniormanagementjobs.com (AngularJs, NodeJs, MongoDb, Bootstrap)  - A talent acquisition website for MIND & METTLE Recruitment Consultants. (url:zealous-wookie.herokuapp.com)
+
+
+ACADEMIC PROJECTS
+DynamoDB (DHT)
+
+
+
+
+
+
+Java, Android
+Implemented a simplified version of DynamoDB using virtual node for partitioning uniform data and load distribution, chain replication for linearizability, hinted handoff for failure recovery.
+
+Data Mining on Biomedical Data
+
+
+
+
+Java, Python
+Designed the schema and  and implemented data warehouse for biomedical data 
+Implemented the Apriori algorithm to find all frequent itemsets and association rules and also implemented parser for querying the generated rules
+Performed statistical analysis on gene expression to classify new patients (ttest, ftest, pearson correlation)
+Implemented various clustering algorithms (KMeans, Hierarchical, Density based, Markov’s graph clustering) and compared their performance using external and internal indexes
+Implemented Gaussian Naive Bayes, Random Forests and Neural Networks algorithms for classification
+
+Handwritten Digits Recognition 
+
+
+
+
+Python
+Implemented a multilayer perceptron neural network to classify handwritten digits achieving 93% performance.
+Implemented Logistic Regression and Support Vector Machines to classify handwritten digits and compare the performance of all three
+
+Classification and Regression
+
+
+
+
+Python
+Implemented LDA and QDA to perform classification on sample dataset
+Implemented Ridge Regression to perform linear regression with regularization to minimize effect of outliers
+Implemented non linear regression by mapping the input features to higher order polynomials
+
+PINTOS operating system
+
+
+
+
+C
+Developed modules on Priority Scheduler, Multilevel Feedback Queue Scheduler and Virtual Memory.
+
+Java Byte Code Compiler
+
+
+
+
+Java
+Developed a mini compiler to convert java code to its respective byte code.
+
+CPU Scheduling Algorithms Simulator
+
+
+
+
+Java
+Implemented a simulator for various CPU Scheduling Algorithms for single & multiprocessor environments
+
+Stocks Volatility & Forecast   
+
+
+MapReduce, Pig ,Hive, R
+Developed an application to calculate stock volatility on data containing 30,000 stocks with each having 3 years’ data on a cluster using 12 nodes and scaled it to 24 and 48 nodes achieving super linear speedup.
+Performed time series forecast of various stocks and compared various forecasting techniques
+
+ACHIEVEMENTS
+2nd position in ‘JAVA JIG’ organized by University School of Information Technology (USIT), GGS I.P. 
+2nd position in ‘C++ Coding competition – KODARJUN’ organized by LBSIM, GGS I.P.
+

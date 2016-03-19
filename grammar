@@ -1,0 +1,34 @@
+resume: {
+	personalInfo,
+	 skills, 
+	 education, 
+	 experience, 
+	 projects, 
+	 acheivments
+	 }
+
+personalInfo: name, address, email, web, cell
+email: '@'
+skills: skill+
+education: 'education' education_records+
+experience: experience_records+
+projects: project_records+
+achievments: achievment_records+
+
+name: [A-Za-z]
+address: .*
+email: .*@.*
+web: www|http
+cell: [0-9]+
+
+skill: [A-Za-z]','
+
+education_records: college dateRange stream
+
+experience_records: company_name location date_range
+
+projects_records: [A-Za-z].*
+
+achievment_records: [A-Za-z].*
+
+
