@@ -1,16 +1,12 @@
 package main;
 import java.io.InputStream;
-
+import java.util.regex.Pattern;
 
 enum TokenType{
-	NAME, EMAIL_HEADER, ADDRESS, URL_HEADER, URL, PHONE, EMAIL, 
-	ALPHA, NUMERIC, ALPHA_NUMERIC, NEW_LINE, EOF, PHONE_HEADER, 
-	EDUCATION, EXPERIENCE, SKILLS
+	NAME, ADDRESS, URL_HEADER, URL, PHONE, EMAIL, 
+	EDUCATION, EXPERIENCE, SKILLS,
+	ALPHA, NUMERIC, ALPHA_NUMERIC, NEW_LINE, EOF  
 }
-
-
-
-
 
 public class Lexer {
 	private NLScanner scanner ;
@@ -36,13 +32,13 @@ public class Lexer {
 		else if(word.equalsIgnoreCase("name")){
 			token =  new Token(word,TokenType.NAME,true);
 		}
-		else if(word.equals("address")){
-			token = new Token(word,TokenType.ADDRESS);
+		else if(word.equalsIgnoreCase("address")){
+			token = new Token(word,TokenType.ADDRESS,true);
 		}
 		else if(word.equals("email")){
 			token =  new Token(word,TokenType.EMAIL,true);
 		}
-		else if(word.contains("@")){
+		else if( word.matches("^[A-Za-z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")){
 			token = new Token(word,TokenType.EMAIL);
 		}
 		else if(word.equals("web")||word.contains("url")){
@@ -56,7 +52,6 @@ public class Lexer {
 		}
 		else if((isNumeric(word)|| containsNumbers(word)) && word.length()>7 ){
 			token = new Token(word,TokenType.PHONE);
-
 		}
 		else if(word.equalsIgnoreCase("education")){
 			token = new Token(word,TokenType.EDUCATION,true);

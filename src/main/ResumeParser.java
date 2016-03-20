@@ -1,4 +1,5 @@
 package main;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -11,20 +12,24 @@ public class ResumeParser {
 	}
 
 	public void parse() {
-		lexer.lex();
-		if (getCurrentTokenType() == TokenType.EOF) {
-			System.out.println(getResume());
-			return;
-		}
-		if (getResume().name == null) {
+		do {
+			lexer.lex();
+			checkCurrentTokenAndParse();
+
+		} while (getCurrentTokenType() != TokenType.EOF);
+		System.out.println(resume);
+	}
+
+	private void checkCurrentTokenAndParse() {
+		if (getResume().getName() == null) {
 			parseName();
-		} else if (getResume().email == null 
-				&& (getCurrentTokenType() == TokenType.EMAIL)) {
+		} else if (getCurrentTokenType() == TokenType.EMAIL) {
 			parseEmail();
-		} else if (getResume().phone == null 
-				&& (getCurrentTokenType() == TokenType.PHONE)) {
+		} else if (getResume().getPhone() == null && (getCurrentTokenType() == TokenType.PHONE)) {
 			parsePhone();
-		} else if (getCurrentTokenType() == TokenType.URL) {
+		} else if(getCurrentTokenType() == TokenType.ADDRESS){
+			parseAddress();
+		}else if (getCurrentTokenType() == TokenType.URL) {
 			parseUrl();
 		} else if (getCurrentTokenType() == TokenType.EDUCATION) {
 			parseEducation();
@@ -33,7 +38,15 @@ public class ResumeParser {
 		} else if (getCurrentTokenType() == TokenType.SKILLS) {
 			parseSkills();
 		}
-		parse();
+	}
+
+	private void parseAddress() {
+		lexer.lex();
+		while (isAlphaNumericOrNewLineToken()) {
+			getResume().setAddress(getResume().getAddress() + lexer.getCurrentToken().value+" ");
+			lexer.lex();
+		}
+		checkCurrentTokenAndParse();
 	}
 
 	private TokenType getCurrentTokenType() {
@@ -42,59 +55,61 @@ public class ResumeParser {
 
 	private void parseSkills() {
 		lexer.lex();
-		while (isAlphaOrAlphaNumericOrNewLineToken()) {
-			getResume().skillsString += lexer.getCurrentToken().value + " ";
+		while (isAlphaNumericOrNewLineToken()) {
+			getResume().setSkillsString(getResume().getSkillsString() + lexer.getCurrentToken().value + " ");
 			lexer.lex();
 		}
-	}
-
-	private boolean isAlphaOrAlphaNumericOrNewLineToken() {
-		return getCurrentTokenType() == TokenType.ALPHA
-				|| getCurrentTokenType() == TokenType.ALPHA_NUMERIC
-				|| getCurrentTokenType() == TokenType.NUMERIC
-				|| getCurrentTokenType() == TokenType.NEW_LINE;
+		checkCurrentTokenAndParse();
 	}
 
 	private void parseExperience() {
 		lexer.lex();
-		while (isAlphaOrAlphaNumericOrNewLineToken()) {
-			getResume().experienceString += lexer.getCurrentToken().value + " ";
+		while (isAlphaNumericOrNewLineToken()) {
+			getResume().setExperienceString(getResume().getExperienceString() + lexer.getCurrentToken().value + " ");
 			lexer.lex();
 		}
+		checkCurrentTokenAndParse();
 	}
 
 	private void parseEducation() {
 		lexer.lex();
-		while (isAlphaOrAlphaNumericOrNewLineToken()) {
-			getResume().educationString += lexer.getCurrentToken().value.replaceAll("\\r?\n", " ") + " ";
+		while (isAlphaNumericOrNewLineToken()) {
+			getResume().setEducationString(getResume().getEducationString() + lexer.getCurrentToken().value);
 			lexer.lex();
 		}
+		checkCurrentTokenAndParse();
 	}
 
 	private void parseUrl() {
 		skipHeader();
-		getResume().links = lexer.getCurrentToken().value;
-	}
-
-	private void skipHeader() {
-		if(lexer.getCurrentToken().isHeader()) lexer.lex();
+		getResume().setLinks(lexer.getCurrentToken().value);
 	}
 
 	private void parsePhone() {
 		skipHeader();
-		getResume().phone = lexer.getCurrentToken().value;
+		getResume().setPhone(lexer.getCurrentToken().value);
 	}
 
 	private void parseEmail() {
 		skipHeader();
-		getResume().email = lexer.getCurrentToken().value;
+		getResume().setEmail(lexer.getCurrentToken().value);
 	}
 
 	private void parseName() {
 		skipHeader();
-		getResume().name = lexer.getCurrentToken().value;
+		getResume().setName(lexer.getCurrentToken().value);
 		lexer.lex();
-		getResume().name += " "+lexer.getCurrentToken().value;
+		getResume().setName(getResume().getName() + " " + lexer.getCurrentToken().value);
+	}
+
+	private void skipHeader() {
+		if (lexer.getCurrentToken().isHeader())
+			lexer.lex();
+	}
+
+	private boolean isAlphaNumericOrNewLineToken() {
+		return getCurrentTokenType() == TokenType.ALPHA || getCurrentTokenType() == TokenType.ALPHA_NUMERIC
+				|| getCurrentTokenType() == TokenType.NUMERIC || getCurrentTokenType() == TokenType.NEW_LINE;
 	}
 
 	public static void main(String arg[]) {

@@ -1,6 +1,7 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,19 +28,37 @@ public class ResumeParserTest {
 	@Test
 	public void testName() {
 		Resume resume = parser.getResume();
-		assertEquals(resume.name,"Utsav Beri");
+		assertEquals(resume.getName(),"Utsav Beri");
 	}
 	
 	@Test
 	public void testEmail() {
 		Resume resume = parser.getResume();
-		assertEquals(resume.email,"utsavber@buffalo.edu");
+		assertEquals(resume.getEmail(),"utsavber@buffalo.edu");
 	}
 	
 	@Test
 	public void testPhone(){
 		Resume resume = parser.getResume();
-		assertEquals(resume.phone,"716-495-8194");
+		assertEquals(resume.getPhone(),"716-495-8194");
+	}
+	
+	@Test
+	public void testEducationNotEmpty(){
+		Resume resume = parser.getResume();
+		assertTrue( !resume.getEducationString().isEmpty());
+	}
+	
+	@Test
+	public void testSkillsNotEmpty(){
+		Resume resume = parser.getResume();
+		assertTrue(!resume.getSkillsString().isEmpty());
+	}
+	
+	@Test
+	public void testExperienceNotEmpty(){
+		Resume resume = parser.getResume();
+		assertTrue(!resume.getExperienceString().isEmpty());
 	}
 	
 	
