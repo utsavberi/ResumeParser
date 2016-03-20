@@ -1,3 +1,4 @@
+package main;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -18,10 +19,10 @@ class Experience{
 }
 
 public class Resume {
-	String name;
+	public String name;
 	String address;
-	String email;
-	String phone;
+	public String email;
+	public String phone;
 	String links;
 	String educationString="";
 	String experienceString="";
