@@ -1,11 +1,8 @@
 package main;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-class DateRange{
-	Calendar dateStart;
-	Calendar dateEnd;
-}
+
 
 class Education{
 	String college;
@@ -13,10 +10,6 @@ class Education{
 	String stream;
 }
 
-class Experience{
-	String company;
-	DateRange dateRange;
-}
 
 public class Resume {
 	
@@ -144,6 +137,7 @@ public class Resume {
 				+" , phone : "+phone+" , links : "+links
 				+" , educationStr : <<"+educationString
 				+">> experienceStr : <<"+experienceString
+				+" experiences : "+experience
 				+">> , skillsStr : <<"+skillsString
 				+">>"
 				+"}";

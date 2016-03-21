@@ -1,7 +1,7 @@
 package main;
 
 public class Token{
-	TokenType tokenType;
+	private TokenType tokenType;
 	String value;
 	private boolean isHeader = false;
 	public Token(String value, TokenType tokenType){
@@ -15,12 +15,19 @@ public class Token{
 	}
 	
 	
+	
 	@Override
 	public String toString(){
-		return "{ type : "+tokenType+" , value : "+value+" }";
+		return "{ type : "+getTokenType()+" , value : "+value+" }";
 	}
 
 	boolean isHeader() {
 		return isHeader;
 	}
+
+	public TokenType getTokenType() {
+		return tokenType;
+	}
+
+	
 }

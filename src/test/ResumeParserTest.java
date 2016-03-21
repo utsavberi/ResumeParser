@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.Lexer;
+import main.ResumeLexer;
 import main.Resume;
 import main.ResumeParser;
 
@@ -18,7 +18,7 @@ public class ResumeParserTest {
 	@Before
 	public void setUp() throws Exception {
 		try {
-			parser = new ResumeParser(new Lexer(new FileInputStream("testData/test")));
+			parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/test")));
 			parser.parse();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

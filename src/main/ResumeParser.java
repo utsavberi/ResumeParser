@@ -1,7 +1,11 @@
 package main;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ResumeParser {
 	private Resume resume = new Resume();
@@ -11,13 +15,14 @@ public class ResumeParser {
 		this.lexer = lex;
 	}
 
-	public void parse() {
+	public Resume parse() {
 		do {
 			lexer.lex();
 			checkCurrentTokenAndParse();
 
 		} while (getCurrentTokenType() != TokenType.EOF);
 		System.out.println(resume);
+		return resume;
 	}
 
 	private void checkCurrentTokenAndParse() {
@@ -50,12 +55,12 @@ public class ResumeParser {
 	}
 
 	private TokenType getCurrentTokenType() {
-		return lexer.getCurrentToken().tokenType;
+		return lexer.getCurrentToken().getTokenType();
 	}
 
 	private void parseSkills() {
 		lexer.lex();
-		while (isAlphaNumericOrNewLineToken()) {
+		while (isAlphaNumericOrNewLineToken() || getCurrentTokenType() == TokenType.SKILLS) {
 			getResume().setSkillsString(getResume().getSkillsString() + lexer.getCurrentToken().value + " ");
 			lexer.lex();
 		}
@@ -64,16 +69,22 @@ public class ResumeParser {
 
 	private void parseExperience() {
 		lexer.lex();
-		while (isAlphaNumericOrNewLineToken()) {
+		while (isAlphaNumericOrNewLineToken() || getCurrentTokenType() == TokenType.EXPERIENCE ) {
 			getResume().setExperienceString(getResume().getExperienceString() + lexer.getCurrentToken().value + " ");
 			lexer.lex();
 		}
+		System.out.println("parse experience ends at "+getCurrentTokenType());
+		Lexer experienceLexer = new ExperienceLexer(new ByteArrayInputStream(getResume().getExperienceString().getBytes()));
+		ExperienceParser experienceParser = new ExperienceParser(experienceLexer);
+		ArrayList<Experience> experiences =  experienceParser.parse();
+		getResume().setExperience(experiences);
+		
 		checkCurrentTokenAndParse();
 	}
 
 	private void parseEducation() {
 		lexer.lex();
-		while (isAlphaNumericOrNewLineToken()) {
+		while (isAlphaNumericOrNewLineToken()|| getCurrentTokenType() == TokenType.EDUCATION) {
 			getResume().setEducationString(getResume().getEducationString() + lexer.getCurrentToken().value);
 			lexer.lex();
 		}
@@ -114,7 +125,7 @@ public class ResumeParser {
 
 	public static void main(String arg[]) {
 		try {
-			ResumeParser parser = new ResumeParser(new Lexer(new FileInputStream("testData/test2")));
+			ResumeParser parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/test")));
 			parser.parse();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
