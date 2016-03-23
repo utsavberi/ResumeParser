@@ -17,12 +17,14 @@ public class PeriodDescriptionParser {
 		this.lexer = experienceLexer;
 	}
 	
+	private String dateMonthStart="";
+	private String dateMonthEnd = "";
+	private String dateYearStart = "";
+	private String dateYearEnd = "";
+	private String description = "";
+	
 	public ArrayList<PeriodDescription> parse(){
-		String dateMonthStart="";
-		String dateMonthEnd = "";
-		String dateYearStart = "";
-		String dateYearEnd = "";
-		String description = "";
+		
 				
 		do{
 			lexer.lex();
@@ -42,57 +44,77 @@ public class PeriodDescriptionParser {
 				description+=lexer.getCurrentToken().value+" ";
 			}
 			else if(dateYearEnd.isEmpty() && getCurrentTokenType() == TokenType.PRESENT){
-				String [] MONTHS = {"jan","feb","mar","apr","may","jun","jul","aug"
-						,"sep","oct","nov","dec"};
+				
 				Date date = new Date();
 				dateYearEnd = Integer.toString(date.getYear()+1900);
-				dateMonthEnd = MONTHS[date.getMonth()];
+				dateMonthEnd = monthIntToString(date.getMonth());
+				continue;
 			}
-			else if( !dateYearStart.isEmpty() 
-					&& !dateYearEnd.isEmpty() 
-					&& !description.isEmpty() ){
-				LocalDate startDate = LocalDate.of(Integer.parseInt(dateYearStart),monthStringToInt(dateMonthStart),1);
+			else if( gotYearStartYearEndAndDescription() == true ){
+				LocalDate startDate = getDateFromFields(dateYearStart,dateMonthStart);
+				LocalDate endDate =  getDateFromFields(dateYearEnd,dateMonthEnd);
 				
-				LocalDate endDate = dateYearEnd.isEmpty()?startDate: LocalDate.of(Integer.parseInt(dateYearEnd),monthStringToInt(dateMonthEnd),1);
+				//end date is smaller than start date split to two records
 				if(endDate.compareTo(startDate) < 0){
 					endDate = startDate;
 					startDate = null;
 					endDate = LocalDate.of(endDate.getYear(), 8, 31);
-					String companyName = getFirstLine(description);
-					experiences.add(new PeriodDescription(companyName,description,new DateRange(startDate,endDate)));
-					dateMonthStart=dateMonthEnd;
-					dateMonthEnd = "";
-					dateYearStart = dateYearEnd;
-					dateYearEnd = "";
-					description = "";
+					
+					experiences.add(new PeriodDescription(getFirstLine(description),description,new DateRange(startDate,endDate)));
+					shiftEndDateFieldsToStartDateFields();
+					resetEndDateFieldsAndDescription();
 				}
 				else{
-					String companyName = getFirstLine(description);
-					experiences.add(new PeriodDescription(companyName,description,new DateRange(startDate,endDate)));
-					dateMonthStart="";
-					dateMonthEnd = "";
-					dateYearStart = "";
-					dateYearEnd = "";
-					description = "";
+					experiences.add(new PeriodDescription(getFirstLine(description),description,new DateRange(startDate,endDate)));
+					resetAllFields();
 				}
 			}
 		}
 		while(getCurrentTokenType() != TokenType.EOF);
+		
 		if(dateYearStart.isEmpty()==false){
-			LocalDate endDate = LocalDate.of(Integer.parseInt(dateYearStart),monthStringToInt(dateMonthStart),1);
-			
-			LocalDate startDate = null;//dateYearEnd.isEmpty()?startDate: LocalDate.of(Integer.parseInt(dateYearEnd),monthStringToInt(dateMonthEnd),1);
+			LocalDate endDate = getDateFromFields(dateYearStart,dateMonthStart);
+			LocalDate startDate = null;
 			endDate = LocalDate.of(endDate.getYear(), 8, 31);
-
-			String companyName = getFirstLine(description);
-			experiences.add(new PeriodDescription(companyName,description,new DateRange(startDate,endDate)));
-			dateMonthStart="";
-			dateMonthEnd = "";
-			dateYearStart = "";
-			dateYearEnd = "";
-			description = "";
+			
+			experiences.add(new PeriodDescription(getFirstLine(description),description,new DateRange(startDate,endDate)));
+			resetAllFields();
 		}
+		
 		return experiences;
+	}
+
+	private LocalDate getDateFromFields(String year,String month) {
+		return LocalDate.of(Integer.parseInt(year),monthStringToInt(month),1);
+	}
+
+	private void shiftEndDateFieldsToStartDateFields() {
+		dateMonthStart=dateMonthEnd;
+		dateYearStart = dateYearEnd;
+	}
+
+	private void resetEndDateFieldsAndDescription() {
+		dateMonthEnd = "";
+		dateYearEnd = "";
+		description = "";
+	}
+
+	private void resetAllFields() {
+		dateMonthStart="";
+		dateMonthEnd = "";
+		dateYearStart = "";
+		dateYearEnd = "";
+		description = "";
+	}
+
+	private boolean gotYearStartYearEndAndDescription() {
+		return !dateYearStart.isEmpty() && !dateYearEnd.isEmpty()	&& !description.isEmpty();
+	}
+
+	private String monthIntToString(int month) {
+		String [] MONTHS = {"jan","feb","mar","apr","may","jun","jul","aug"
+				,"sep","oct","nov","dec"};
+		return MONTHS[month];
 	}
 
 	private String getFirstLine(String text) {
@@ -120,7 +142,7 @@ public class PeriodDescriptionParser {
 			case "oct":return 10;
 			case "nov":return 11;
 			case "dec":return 12;
-			default: return 0;
+			default: return 1;
 		}
 	}
 

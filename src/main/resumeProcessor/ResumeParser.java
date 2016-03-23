@@ -50,17 +50,25 @@ public class ResumeParser {
 
 	private void parseProjects() {
 		lexer.lex();
-		while (isAlphaNumericToken() || getCurrentTokenType() == TokenType.PROJECTS ) {
-			getResume().setProjectString(getResume().getProjectString() + lexer.getCurrentToken().value + " ");
+		ArrayList<PeriodDescription> projects = extractPeriodList(TokenType.PROJECTS);
+		getResume().setProjects(projects);
+		checkCurrentTokenAndParse();		
+	}
+
+	private ArrayList<PeriodDescription> extractPeriodList(TokenType tokenType) {
+		String periods = "";
+		while (isAlphaNumericToken() || getCurrentTokenType() ==  tokenType) {
+			periods +=lexer.getCurrentToken().value + " ";
 			lexer.lex();
 		}
-		
-		Lexer lexer = new PeriodDescriptionLexer(new ByteArrayInputStream(getResume().getProjectString().getBytes()));
+		return parsePeriods(periods);
+	}
+
+	private ArrayList<PeriodDescription> parsePeriods(String periods) {
+		Lexer lexer = new PeriodDescriptionLexer(new ByteArrayInputStream(periods.getBytes()));
 		PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
-		ArrayList<PeriodDescription> projects =  parser.parse();
-		getResume().setProjects(projects);
-		
-		checkCurrentTokenAndParse();		
+		ArrayList<PeriodDescription> periodList =  parser.parse();
+		return periodList;
 	}
 
 	private TokenType getCurrentTokenType() {
@@ -69,11 +77,18 @@ public class ResumeParser {
 
 	private void parseSkills() {
 		lexer.lex();
+		String skillsStr = "";
 		while (isAlphaNumericToken() || getCurrentTokenType() == TokenType.SKILLS) {
-			getResume().setSkillsString(getResume().getSkillsString() + lexer.getCurrentToken().value + " ");
+			skillsStr+=lexer.getCurrentToken().value + " ";
 			lexer.lex();
 		}
-		String [] skills = (getResume().getSkillsString().split("[\\n,]"));
+		List<String> skillsList = parseSkills(skillsStr);
+		getResume().setSkills(skillsList);
+		checkCurrentTokenAndParse();
+	}
+
+	private List<String> parseSkills(String skillsStr) {
+		String [] skills = (skillsStr.split("[\\n,]"));
 		List<String> skillsList = new ArrayList<String>();
 		for(String skill: skills){
 			skill = skill.trim();
@@ -81,21 +96,11 @@ public class ResumeParser {
 				skillsList.add(skill);
 			}
 		}
-		getResume().setSkills(skillsList);
-		checkCurrentTokenAndParse();
+		return skillsList;
 	}
 
 	private void parseExperience() {
-		lexer.lex();
-		while (isAlphaNumericToken() || getCurrentTokenType() == TokenType.EXPERIENCE ) {
-			getResume().setExperienceString(getResume().getExperienceString() + lexer.getCurrentToken().value + " ");
-			lexer.lex();
-		}
-		
-		System.out.println("parse experience ends at "+getCurrentTokenType());
-		Lexer experienceLexer = new PeriodDescriptionLexer(new ByteArrayInputStream(getResume().getExperienceString().getBytes()));
-		PeriodDescriptionParser experienceParser = new PeriodDescriptionParser(experienceLexer);
-		ArrayList<PeriodDescription> experiences =  experienceParser.parse();
+		ArrayList<PeriodDescription> experiences =  extractPeriodList(TokenType.EXPERIENCE);
 		getResume().setExperience(experiences);
 		
 		checkCurrentTokenAndParse();
@@ -103,15 +108,7 @@ public class ResumeParser {
 
 	private void parseEducation() {
 		lexer.lex();
-		while (isAlphaNumericToken()|| getCurrentTokenType() == TokenType.EDUCATION) {
-			getResume().setEducationString(getResume().getEducationString() + lexer.getCurrentToken().value+" ");
-			lexer.lex();
-		}
-		
-		System.out.println("parse education ends at "+getCurrentTokenType());
-		Lexer educationLexer = new PeriodDescriptionLexer(new ByteArrayInputStream(getResume().getEducationString().getBytes()));
-		PeriodDescriptionParser periodDescriptionParser = new PeriodDescriptionParser(educationLexer);
-		ArrayList<PeriodDescription> education =  periodDescriptionParser.parse();
+		ArrayList<PeriodDescription> education =  extractPeriodList(TokenType.EDUCATION);
 		getResume().setEducation(education);
 		
 		checkCurrentTokenAndParse();
