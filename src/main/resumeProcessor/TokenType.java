@@ -1,4 +1,4 @@
-package main;
+package main.resumeProcessor;
 
 public enum TokenType{
 	NAME, ADDRESS, URL_HEADER, URL, PHONE, EMAIL, 

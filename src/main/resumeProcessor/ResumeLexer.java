@@ -1,4 +1,4 @@
-package main;
+package main.resumeProcessor;
 import java.io.InputStream;
 
 public class ResumeLexer implements Lexer {
@@ -29,9 +29,6 @@ public class ResumeLexer implements Lexer {
 		}
 		else if(word.equalsIgnoreCase("name")){
 			token =  new Token(word,TokenType.NAME,true);
-		}
-		else if(word.equalsIgnoreCase("address")){
-			token = new Token(word,TokenType.ADDRESS,true);
 		}
 		else if(word.equals("email")){
 			token =  new Token(word,TokenType.EMAIL,true);

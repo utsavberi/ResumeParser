@@ -7,9 +7,8 @@ import java.io.ByteArrayInputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import main.PeriodDescriptionLexer;
-import main.TokenType;
+import main.resumeProcessor.PeriodDescriptionLexer;
+import main.resumeProcessor.TokenType;
 
 public class ExperienceLexerTest {
 

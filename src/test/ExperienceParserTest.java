@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.PeriodDescriptionLexer;
-import main.PeriodDescriptionParser;
-import model.DateRange;
-import model.PeriodDescription;
+import main.model.DateRange;
+import main.model.PeriodDescription;
+import main.resumeProcessor.PeriodDescriptionLexer;
+import main.resumeProcessor.PeriodDescriptionParser;
 
 public class ExperienceParserTest {
 

@@ -1,4 +1,4 @@
-package main;
+package main.resumeProcessor;
 
 public interface Lexer {
 

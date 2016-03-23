@@ -9,9 +9,9 @@ import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.ResumeLexer;
-import main.ResumeParser;
-import model.Resume;
+import main.model.Resume;
+import main.resumeProcessor.ResumeLexer;
+import main.resumeProcessor.ResumeParser;
 
 public class ResumeParserTest {
 	ResumeParser parser;

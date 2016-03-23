@@ -1,4 +1,4 @@
-package main;
+package main.resumeProcessor;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Queue;

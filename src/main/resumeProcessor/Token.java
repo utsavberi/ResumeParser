@@ -1,4 +1,4 @@
-package main;
+package main.resumeProcessor;
 
 public class Token{
 	private TokenType tokenType;
@@ -13,9 +13,7 @@ public class Token{
 		this(value, tokenType);
 		this.isHeader = isHeader;
 	}
-	
-	
-	
+
 	@Override
 	public String toString(){
 		return "{ type : "+getTokenType()+" , value : "+value+" }";

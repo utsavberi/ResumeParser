@@ -1,12 +1,13 @@
-package main;
+package main.resumeProcessor;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
-import model.PeriodDescription;
-import model.Resume;
+import main.model.PeriodDescription;
+import main.model.Resume;
 
 public class ResumeParser {
 	private Resume resume = new Resume();
@@ -42,9 +43,6 @@ public class ResumeParser {
 		} else if (getCurrentTokenType() == TokenType.SKILLS) {
 			parseSkills();
 		}
-		else if(getCurrentTokenType() == TokenType.ADDRESS){
-			parseAddress();
-		}
 		else if (getResume().getName() == null && getCurrentTokenType() == TokenType.ALPHA ) {
 			parseName();
 		} 
@@ -57,22 +55,12 @@ public class ResumeParser {
 			lexer.lex();
 		}
 		
-		System.out.println("parse project ends at "+getCurrentTokenType());
-		Lexer experienceLexer = new PeriodDescriptionLexer(new ByteArrayInputStream(getResume().getProjectString().getBytes()));
-		PeriodDescriptionParser experienceParser = new PeriodDescriptionParser(experienceLexer);
-		ArrayList<PeriodDescription> experiences =  experienceParser.parse();
-		getResume().setProjects(experiences);
+		Lexer lexer = new PeriodDescriptionLexer(new ByteArrayInputStream(getResume().getProjectString().getBytes()));
+		PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
+		ArrayList<PeriodDescription> projects =  parser.parse();
+		getResume().setProjects(projects);
 		
 		checkCurrentTokenAndParse();		
-	}
-
-	private void parseAddress() {
-		lexer.lex();
-		while (isAlphaNumericToken()) {
-			getResume().setAddress(getResume().getAddress() + lexer.getCurrentToken().value+" ");
-			lexer.lex();
-		}
-		checkCurrentTokenAndParse();
 	}
 
 	private TokenType getCurrentTokenType() {
@@ -85,6 +73,15 @@ public class ResumeParser {
 			getResume().setSkillsString(getResume().getSkillsString() + lexer.getCurrentToken().value + " ");
 			lexer.lex();
 		}
+		String [] skills = (getResume().getSkillsString().split("[\\n,]"));
+		List<String> skillsList = new ArrayList<String>();
+		for(String skill: skills){
+			skill = skill.trim();
+			if(skill.isEmpty()==false){
+				skillsList.add(skill);
+			}
+		}
+		getResume().setSkills(skillsList);
 		checkCurrentTokenAndParse();
 	}
 

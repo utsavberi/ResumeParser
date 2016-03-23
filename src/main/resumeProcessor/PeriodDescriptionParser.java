@@ -1,4 +1,4 @@
-package main;
+package main.resumeProcessor;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
-import model.DateRange;
-import model.PeriodDescription;
+import main.model.DateRange;
+import main.model.PeriodDescription;
 
 
 public class PeriodDescriptionParser {
@@ -128,8 +128,8 @@ public class PeriodDescriptionParser {
 		return lexer.getCurrentToken().getTokenType();
 	}
 	
+	//test
 	public static void main(String arg[]) throws FileNotFoundException{
-		//ResumeParser parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/test2")));
 		PeriodDescriptionParser parser = new PeriodDescriptionParser(
 				new PeriodDescriptionLexer(
 						new FileInputStream("testData/experienceData")));

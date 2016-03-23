@@ -1,5 +1,6 @@
-package model;
+package main.model;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Resume {
 	
@@ -11,14 +12,7 @@ public class Resume {
 		this.name = name;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
+	
 	public String getEmail() {
 		return email;
 	}
@@ -67,15 +61,15 @@ public class Resume {
 		this.skillsString = skillsString;
 	}
 
-	public ArrayList<String> getSkills() {
+	public List<String> getSkills() {
 		return skills;
 	}
 
-	public void setSkills(ArrayList<String> skills) {
+	public void setSkills(List<String> skills) {
 		this.skills = skills;
 	}
 
-	public ArrayList<PeriodDescription> getEducation() {
+	public List<PeriodDescription> getEducation() {
 		return education;
 	}
 
@@ -83,7 +77,7 @@ public class Resume {
 		this.education = education;
 	}
 
-	public ArrayList<PeriodDescription> getExperience() {
+	public List<PeriodDescription> getExperience() {
 		return experience;
 	}
 
@@ -91,7 +85,7 @@ public class Resume {
 		this.experience = experience;
 	}
 
-	public ArrayList<PeriodDescription> getProjects() {
+	public List<PeriodDescription> getProjects() {
 		return projects;
 	}
 
@@ -99,7 +93,7 @@ public class Resume {
 		this.projects = projects;
 	}
 
-	public ArrayList<String> getAchievements() {
+	public List<String> getAchievements() {
 		return achievements;
 	}
 
@@ -108,7 +102,6 @@ public class Resume {
 	}
 
 	private String name;
-	private String address="";
 	private String email;
 	private String phone;
 	private String links;
@@ -116,24 +109,24 @@ public class Resume {
 	private String experienceString="";
 	private String skillsString="";
 	private String projectString ="";
-	private ArrayList<String> skills = new ArrayList<String>();
-	private ArrayList<PeriodDescription> education = new ArrayList<>();
-	private ArrayList<PeriodDescription> experience = new ArrayList<>();
-	private ArrayList<PeriodDescription> projects = new ArrayList<>();
-	private ArrayList<String> achievements = new ArrayList<>();
+	private List<String> skills = new ArrayList<String>();
+	private List<PeriodDescription> education = new ArrayList<>();
+	private List<PeriodDescription> experience = new ArrayList<>();
+	private List<PeriodDescription> projects = new ArrayList<>();
+	private List<String> achievements = new ArrayList<>();
 	
 	@Override
 	public String toString(){
-		return "{ Name : "+name+" , address : "+address+" , email : "+email
-//				+" , phone : "+phone+" , links : "+links
+		return "{ Name : "+name+" , email : "+email
+				+" , phone : "+phone+" , links : "+links
 //				+" , educationStr : <<"+educationString
-////				+">> experienceStr : <<"+experienceString
-//				+" experiences : "+experience
-//				+" education : "+education
+//				+">> experienceStr : <<"+experienceString
+				+" experiences : "+experience
+				+" education : "+education
 				+" projects : "+projects
-				+" projectsStr : <<"+projectString
+//				+" projectsStr : <<"+projectString
 //				+">> , skillsStr : <<"+skillsString
-				+">>"
+				+">> , skills : "+skills
 				+"}";
 	}
 
