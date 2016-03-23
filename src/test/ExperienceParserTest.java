@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.DateRange;
-import main.Experience;
-import main.ExperienceLexer;
-import main.ExperienceParser;
+import main.PeriodDescriptionLexer;
+import main.PeriodDescriptionParser;
+import model.DateRange;
+import model.PeriodDescription;
 
 public class ExperienceParserTest {
 
@@ -24,10 +24,10 @@ public class ExperienceParserTest {
 	@Test
 	public void experienceCountTest() {
 		try {
-			ExperienceLexer lexer = new ExperienceLexer(new FileInputStream("testData/experienceData"));
-			ExperienceParser parser = new ExperienceParser(lexer);
+			PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new FileInputStream("testData/experienceData"));
+			PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
 			System.out.println(parser.parse());
-			assertEquals(parser.parse().size(),2);
+			assertEquals(2,parser.parse().size());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -36,9 +36,9 @@ public class ExperienceParserTest {
 	@Test
 	public void experienceDateRangesTest() {
 		try {
-			ExperienceLexer lexer = new ExperienceLexer(new FileInputStream("testData/experienceData"));
-			ExperienceParser parser = new ExperienceParser(lexer);
-			ArrayList<Experience> experiences = parser.parse();
+			PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new FileInputStream("testData/experienceData"));
+			PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
+			ArrayList<PeriodDescription> experiences = parser.parse();
 			DateRange expected = new DateRange( LocalDate.of(2015,6,1), LocalDate.of(2015,7,1));
 			assertTrue(expected.equals(experiences.get(0).getDateRange()));
 			//Jan 2013 - Aug 2014

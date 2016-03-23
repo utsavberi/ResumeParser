@@ -4,8 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+
+import model.PeriodDescription;
+import model.Resume;
 
 public class ResumeParser {
 	private Resume resume = new Resume();
@@ -26,28 +27,48 @@ public class ResumeParser {
 	}
 
 	private void checkCurrentTokenAndParse() {
-		if (getResume().getName() == null) {
-			parseName();
-		} else if (getCurrentTokenType() == TokenType.EMAIL) {
+		if (getCurrentTokenType() == TokenType.EMAIL) {
 			parseEmail();
-		} else if (getResume().getPhone() == null && (getCurrentTokenType() == TokenType.PHONE)) {
+		} else if ((getCurrentTokenType() == TokenType.PHONE)) {
 			parsePhone();
-		} else if(getCurrentTokenType() == TokenType.ADDRESS){
-			parseAddress();
-		}else if (getCurrentTokenType() == TokenType.URL) {
+		}  else if (getCurrentTokenType() == TokenType.URL) {
 			parseUrl();
 		} else if (getCurrentTokenType() == TokenType.EDUCATION) {
 			parseEducation();
 		} else if (getCurrentTokenType() == TokenType.EXPERIENCE) {
 			parseExperience();
+		} else if (getCurrentTokenType() == TokenType.PROJECTS) {
+			parseProjects();
 		} else if (getCurrentTokenType() == TokenType.SKILLS) {
 			parseSkills();
 		}
+		else if(getCurrentTokenType() == TokenType.ADDRESS){
+			parseAddress();
+		}
+		else if (getResume().getName() == null && getCurrentTokenType() == TokenType.ALPHA ) {
+			parseName();
+		} 
+	}
+
+	private void parseProjects() {
+		lexer.lex();
+		while (isAlphaNumericToken() || getCurrentTokenType() == TokenType.PROJECTS ) {
+			getResume().setProjectString(getResume().getProjectString() + lexer.getCurrentToken().value + " ");
+			lexer.lex();
+		}
+		
+		System.out.println("parse project ends at "+getCurrentTokenType());
+		Lexer experienceLexer = new PeriodDescriptionLexer(new ByteArrayInputStream(getResume().getProjectString().getBytes()));
+		PeriodDescriptionParser experienceParser = new PeriodDescriptionParser(experienceLexer);
+		ArrayList<PeriodDescription> experiences =  experienceParser.parse();
+		getResume().setProjects(experiences);
+		
+		checkCurrentTokenAndParse();		
 	}
 
 	private void parseAddress() {
 		lexer.lex();
-		while (isAlphaNumericOrNewLineToken()) {
+		while (isAlphaNumericToken()) {
 			getResume().setAddress(getResume().getAddress() + lexer.getCurrentToken().value+" ");
 			lexer.lex();
 		}
@@ -60,7 +81,7 @@ public class ResumeParser {
 
 	private void parseSkills() {
 		lexer.lex();
-		while (isAlphaNumericOrNewLineToken() || getCurrentTokenType() == TokenType.SKILLS) {
+		while (isAlphaNumericToken() || getCurrentTokenType() == TokenType.SKILLS) {
 			getResume().setSkillsString(getResume().getSkillsString() + lexer.getCurrentToken().value + " ");
 			lexer.lex();
 		}
@@ -69,14 +90,15 @@ public class ResumeParser {
 
 	private void parseExperience() {
 		lexer.lex();
-		while (isAlphaNumericOrNewLineToken() || getCurrentTokenType() == TokenType.EXPERIENCE ) {
+		while (isAlphaNumericToken() || getCurrentTokenType() == TokenType.EXPERIENCE ) {
 			getResume().setExperienceString(getResume().getExperienceString() + lexer.getCurrentToken().value + " ");
 			lexer.lex();
 		}
+		
 		System.out.println("parse experience ends at "+getCurrentTokenType());
-		Lexer experienceLexer = new ExperienceLexer(new ByteArrayInputStream(getResume().getExperienceString().getBytes()));
-		ExperienceParser experienceParser = new ExperienceParser(experienceLexer);
-		ArrayList<Experience> experiences =  experienceParser.parse();
+		Lexer experienceLexer = new PeriodDescriptionLexer(new ByteArrayInputStream(getResume().getExperienceString().getBytes()));
+		PeriodDescriptionParser experienceParser = new PeriodDescriptionParser(experienceLexer);
+		ArrayList<PeriodDescription> experiences =  experienceParser.parse();
 		getResume().setExperience(experiences);
 		
 		checkCurrentTokenAndParse();
@@ -84,10 +106,17 @@ public class ResumeParser {
 
 	private void parseEducation() {
 		lexer.lex();
-		while (isAlphaNumericOrNewLineToken()|| getCurrentTokenType() == TokenType.EDUCATION) {
-			getResume().setEducationString(getResume().getEducationString() + lexer.getCurrentToken().value);
+		while (isAlphaNumericToken()|| getCurrentTokenType() == TokenType.EDUCATION) {
+			getResume().setEducationString(getResume().getEducationString() + lexer.getCurrentToken().value+" ");
 			lexer.lex();
 		}
+		
+		System.out.println("parse education ends at "+getCurrentTokenType());
+		Lexer educationLexer = new PeriodDescriptionLexer(new ByteArrayInputStream(getResume().getEducationString().getBytes()));
+		PeriodDescriptionParser periodDescriptionParser = new PeriodDescriptionParser(educationLexer);
+		ArrayList<PeriodDescription> education =  periodDescriptionParser.parse();
+		getResume().setEducation(education);
+		
 		checkCurrentTokenAndParse();
 	}
 
@@ -118,14 +147,14 @@ public class ResumeParser {
 			lexer.lex();
 	}
 
-	private boolean isAlphaNumericOrNewLineToken() {
+	private boolean isAlphaNumericToken() {
 		return getCurrentTokenType() == TokenType.ALPHA || getCurrentTokenType() == TokenType.ALPHA_NUMERIC
-				|| getCurrentTokenType() == TokenType.NUMERIC || getCurrentTokenType() == TokenType.NEW_LINE;
+				|| getCurrentTokenType() == TokenType.NUMERIC || getCurrentTokenType() == TokenType.NEW_LINE ;
 	}
 
 	public static void main(String arg[]) {
 		try {
-			ResumeParser parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/test")));
+			ResumeParser parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/resume3")));
 			parser.parse();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

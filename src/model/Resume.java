@@ -1,15 +1,5 @@
-package main;
-import java.time.LocalDate;
+package model;
 import java.util.ArrayList;
-
-
-
-class Education{
-	String college;
-	DateRange dateRange;
-	String stream;
-}
-
 
 public class Resume {
 	
@@ -85,27 +75,27 @@ public class Resume {
 		this.skills = skills;
 	}
 
-	public ArrayList<Education> getEducation() {
+	public ArrayList<PeriodDescription> getEducation() {
 		return education;
 	}
 
-	public void setEducation(ArrayList<Education> education) {
+	public void setEducation(ArrayList<PeriodDescription> education) {
 		this.education = education;
 	}
 
-	public ArrayList<Experience> getExperience() {
+	public ArrayList<PeriodDescription> getExperience() {
 		return experience;
 	}
 
-	public void setExperience(ArrayList<Experience> experience) {
+	public void setExperience(ArrayList<PeriodDescription> experience) {
 		this.experience = experience;
 	}
 
-	public ArrayList<String> getProjects() {
+	public ArrayList<PeriodDescription> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(ArrayList<String> projects) {
+	public void setProjects(ArrayList<PeriodDescription> projects) {
 		this.projects = projects;
 	}
 
@@ -125,21 +115,33 @@ public class Resume {
 	private String educationString="";
 	private String experienceString="";
 	private String skillsString="";
+	private String projectString ="";
 	private ArrayList<String> skills = new ArrayList<String>();
-	private ArrayList<Education> education = new ArrayList<Education>();
-	private ArrayList<Experience> experience = new ArrayList<>();
-	private ArrayList<String> projects = new ArrayList<String>();
+	private ArrayList<PeriodDescription> education = new ArrayList<>();
+	private ArrayList<PeriodDescription> experience = new ArrayList<>();
+	private ArrayList<PeriodDescription> projects = new ArrayList<>();
 	private ArrayList<String> achievements = new ArrayList<>();
 	
 	@Override
 	public String toString(){
 		return "{ Name : "+name+" , address : "+address+" , email : "+email
-				+" , phone : "+phone+" , links : "+links
-				+" , educationStr : <<"+educationString
-				+">> experienceStr : <<"+experienceString
-				+" experiences : "+experience
-				+">> , skillsStr : <<"+skillsString
+//				+" , phone : "+phone+" , links : "+links
+//				+" , educationStr : <<"+educationString
+////				+">> experienceStr : <<"+experienceString
+//				+" experiences : "+experience
+//				+" education : "+education
+				+" projects : "+projects
+				+" projectsStr : <<"+projectString
+//				+">> , skillsStr : <<"+skillsString
 				+">>"
 				+"}";
+	}
+
+	public String getProjectString() {
+		return projectString;
+	}
+
+	public void setProjectString(String projectString) {
+		this.projectString = projectString;
 	}
 }

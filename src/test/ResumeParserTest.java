@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import main.ResumeLexer;
-import main.Resume;
 import main.ResumeParser;
+import model.Resume;
 
 public class ResumeParserTest {
 	ResumeParser parser;
@@ -28,19 +28,19 @@ public class ResumeParserTest {
 	@Test
 	public void testName() {
 		Resume resume = parser.getResume();
-		assertEquals(resume.getName(),"Utsav Beri");
+		assertEquals("Utsav Beri",resume.getName());
 	}
 	
 	@Test
 	public void testEmail() {
 		Resume resume = parser.getResume();
-		assertEquals(resume.getEmail(),"utsavber@buffalo.edu");
+		assertEquals("utsavber@buffalo.edu",resume.getEmail());
 	}
 	
 	@Test
 	public void testPhone(){
 		Resume resume = parser.getResume();
-		assertEquals(resume.getPhone(),"716-495-8194");
+		assertEquals("716-495-8194",resume.getPhone());
 	}
 	
 	@Test

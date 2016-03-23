@@ -1,8 +1,5 @@
 package main;
 import java.io.InputStream;
-import java.util.regex.Pattern;
-
-
 
 public class ResumeLexer implements Lexer {
 	private NLScanner scanner ;
@@ -26,6 +23,7 @@ public class ResumeLexer implements Lexer {
 		}
 		String word = scanner.next();
 		
+
 		if(word.equals("\n")){
 			token = new Token(word, TokenType.NEW_LINE);
 		}
@@ -60,6 +58,10 @@ public class ResumeLexer implements Lexer {
 		{
 			token = new Token(word,TokenType.EXPERIENCE,true);
 		}
+		else if(word.equals("Projects"))
+		{
+			token = new Token(word,TokenType.PROJECTS,true);
+		}
 		else if(word.equalsIgnoreCase("skill")||word.equalsIgnoreCase("skills")||word.equalsIgnoreCase("keywords")){
 			token = new Token(word,TokenType.SKILLS,true);
 		}
@@ -74,7 +76,7 @@ public class ResumeLexer implements Lexer {
 			token = new Token(word,TokenType.ALPHA_NUMERIC);
 		}
 		
-		System.out.println("lexer "+getCurrentToken().getTokenType()+" :"+getCurrentToken().value);
+		System.out.println("resume lexer "+getCurrentToken().getTokenType()+" :"+getCurrentToken().value);
 				
 	}
 	
