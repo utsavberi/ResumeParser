@@ -45,8 +45,8 @@ public class ResumeLexer implements Lexer {
 		else if(word.contains("cell")||word.contains("mobile")||word.contains("phone")){
 			token = new Token(word,TokenType.PHONE,true);
 		}
-		else if((isNumeric(word.replaceAll("[\\(\\\\-]", ""))) && word.length()>7 ){
-			token = new Token(word,TokenType.PHONE);
+		else if((isNumeric(word.replaceAll("[^0-9]", ""))) && word.length()>7 ){
+			token = new Token(word.replaceAll("[^0-9]", ""),TokenType.PHONE);
 		}
 		else if(word.equalsIgnoreCase("education")){
 			token = new Token(word,TokenType.EDUCATION,true);

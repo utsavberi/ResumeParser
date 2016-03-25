@@ -40,25 +40,25 @@ public class ResumeParserTest {
 	@Test
 	public void testPhone(){
 		Resume resume = parser.getResume();
-		assertEquals("716-495-8194",resume.getPhone());
+		assertEquals("7164958194",resume.getPhone());
 	}
 	
 	@Test
 	public void testEducationNotEmpty(){
 		Resume resume = parser.getResume();
-		assertTrue( !resume.getEducationString().isEmpty());
+		assertEquals( 3,resume.getEducation().size());
 	}
 	
 	@Test
 	public void testSkillsNotEmpty(){
 		Resume resume = parser.getResume();
-		assertTrue(!resume.getSkillsString().isEmpty());
+		assertEquals(26,resume.getSkills().size());
 	}
 	
 	@Test
 	public void testExperienceNotEmpty(){
 		Resume resume = parser.getResume();
-		assertTrue(!resume.getExperienceString().isEmpty());
+		assertEquals(2,resume.getExperience().size());
 	}
 	
 	

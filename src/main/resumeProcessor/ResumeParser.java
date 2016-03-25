@@ -148,7 +148,7 @@ public class ResumeParser {
 
 	public static void main(String arg[]) {
 		try {
-			ResumeParser parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/resume3")));
+			ResumeParser parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/resume5")));
 			parser.parse();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

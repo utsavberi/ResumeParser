@@ -15,7 +15,7 @@ import main.model.PeriodDescription;
 import main.resumeProcessor.PeriodDescriptionLexer;
 import main.resumeProcessor.PeriodDescriptionParser;
 
-public class ExperienceParserTest {
+public class PeriodDescriptionParserTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -26,7 +26,6 @@ public class ExperienceParserTest {
 		try {
 			PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new FileInputStream("testData/experienceData"));
 			PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
-			System.out.println(parser.parse());
 			assertEquals(2,parser.parse().size());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -43,7 +42,7 @@ public class ExperienceParserTest {
 			assertTrue(expected.equals(experiences.get(0).getDateRange()));
 			//Jan 2013 - Aug 2014
 			expected = new DateRange( LocalDate.of(2013,1,1), LocalDate.of(2014,8,1));
-			assertTrue(expected.equals(experiences.get(1).getDateRange()));
+			assertEquals(expected,(experiences.get(1).getDateRange()));
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

@@ -10,7 +10,7 @@ import org.junit.Test;
 import main.resumeProcessor.PeriodDescriptionLexer;
 import main.resumeProcessor.TokenType;
 
-public class ExperienceLexerTest {
+public class PeriodDescriptionLexerTest {
 
 	@Before
 	public void setUp() throws Exception {

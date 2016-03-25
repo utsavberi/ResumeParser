@@ -24,8 +24,6 @@ public class PeriodDescriptionParser {
 	private String description = "";
 	
 	public ArrayList<PeriodDescription> parse(){
-		
-				
 		do{
 			lexer.lex();
 			if(dateMonthStart.isEmpty() && getCurrentTokenType() == TokenType.MONTH_STRING){
