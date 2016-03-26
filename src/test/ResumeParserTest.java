@@ -17,12 +17,8 @@ public class ResumeParserTest {
 	ResumeParser parser;
 	@Before
 	public void setUp() throws Exception {
-		try {
 			parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/test")));
 			parser.parse();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Test
@@ -52,7 +48,7 @@ public class ResumeParserTest {
 	@Test
 	public void testSkillsNotEmpty(){
 		Resume resume = parser.getResume();
-		assertEquals(26,resume.getSkills().size());
+		assertEquals(21,resume.getSkills().size());
 	}
 	
 	@Test

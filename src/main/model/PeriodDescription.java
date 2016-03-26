@@ -1,11 +1,9 @@
 package main.model;
 
 public class PeriodDescription{
-	private String name;
 	private DateRange dateRange;
 	private String description;
-	public PeriodDescription(String company, String description, DateRange dateRange){
-		this.name = company;
+	public PeriodDescription( String description, DateRange dateRange){
 		this.dateRange = dateRange;
 		this.description = description;
 	}
@@ -13,9 +11,7 @@ public class PeriodDescription{
 		return dateRange;
 	}
 	
-	public String getName() {
-		return name;
-	}
+	
 	
 	public String getDescription() {
 		return description;
@@ -23,7 +19,7 @@ public class PeriodDescription{
 	
 	@Override 
 	public String toString(){
-		return "{ date range "+dateRange+" \n, name :"+name
+		return "{ date range "+dateRange
 				+" , \n description : "+description
 				+"}\n";
 	}

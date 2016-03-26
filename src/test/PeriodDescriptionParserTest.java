@@ -22,32 +22,35 @@ public class PeriodDescriptionParserTest {
 	}
 
 	@Test
-	public void experienceCountTest() {
-		try {
-			PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new FileInputStream("testData/experienceData"));
+	public void experienceCountTestWithStartEndDates() throws FileNotFoundException{
+
+			PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new FileInputStream("testData/experienceDataWithStartEndDates"));
 			PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
 			assertEquals(2,parser.parse().size());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	@Test
-	public void experienceDateRangesTest() {
-		try {
-			PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new FileInputStream("testData/experienceData"));
+	public void experienceDateRangesTestWithStartEndDates() throws FileNotFoundException {
+		
+			PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new FileInputStream("testData/experienceDataWithStartEndDates"));
 			PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
 			ArrayList<PeriodDescription> experiences = parser.parse();
 			DateRange expected = new DateRange( LocalDate.of(2015,6,1), LocalDate.of(2015,7,1));
-			assertTrue(expected.equals(experiences.get(0).getDateRange()));
+			assertEquals(expected,(experiences.get(0).getDateRange()));
 			//Jan 2013 - Aug 2014
 			expected = new DateRange( LocalDate.of(2013,1,1), LocalDate.of(2014,8,1));
 			assertEquals(expected,(experiences.get(1).getDateRange()));
 			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		
 	}
+	
+	@Test
+	public void experienceCountTestWithSingelYear() throws FileNotFoundException{
+
+		PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new FileInputStream("testData/educationDataWithSingleYear"));
+		PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
+		assertEquals(3,parser.parse().size());
+}
 	
 	
 

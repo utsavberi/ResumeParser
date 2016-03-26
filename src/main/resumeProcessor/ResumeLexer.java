@@ -6,7 +6,7 @@ public class ResumeLexer implements Lexer {
 	private Token token;
 	public ResumeLexer(InputStream stream){
 		this.scanner = new NLScanner(stream);
-		this.scanner.useDelimiter(":| ");
+		this.scanner.useDelimiter(":|\\s+");
 	}
 	
 	
@@ -36,7 +36,7 @@ public class ResumeLexer implements Lexer {
 		else if( word.matches("^[A-Za-z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")){
 			token = new Token(word,TokenType.EMAIL);
 		}
-		else if(word.equals("web")||word.contains("url")){
+		else if(word.matches(".?web.?")||word.matches(".?url.?")){
 			token = new Token(word,TokenType.URL,true);
 		}
 		else if(word.contains(".com")){
@@ -45,13 +45,14 @@ public class ResumeLexer implements Lexer {
 		else if(word.contains("cell")||word.contains("mobile")||word.contains("phone")){
 			token = new Token(word,TokenType.PHONE,true);
 		}
-		else if((isNumeric(word.replaceAll("[^0-9]", ""))) && word.length()>7 ){
+		else if((isNumeric(word.replaceAll("[^0-9]", ""))) && word.replaceAll("[^0-9]", "").length()>7 ){
 			token = new Token(word.replaceAll("[^0-9]", ""),TokenType.PHONE);
 		}
-		else if(word.equalsIgnoreCase("education")){
+		else if(word.equalsIgnoreCase("education")||word.equalsIgnoreCase("academic")||word.equalsIgnoreCase("academics")
+				){
 			token = new Token(word,TokenType.EDUCATION,true);
 		}
-		else if(word.equalsIgnoreCase("experience"))
+		else if(word.toLowerCase().matches(".*experience.*")||word.toLowerCase().matches("profession.*"))
 		{
 			token = new Token(word,TokenType.EXPERIENCE,true);
 		}
@@ -62,7 +63,10 @@ public class ResumeLexer implements Lexer {
 		else if(word.equalsIgnoreCase("skill")||word.equalsIgnoreCase("skills")||word.equalsIgnoreCase("keywords")){
 			token = new Token(word,TokenType.SKILLS,true);
 		}
-		
+		else if(word.equalsIgnoreCase("personal")){
+			
+			token = new Token("personal",TokenType.PERSONAL);
+		}
 		else if(isNumeric(word)){
 			token = new Token(word,TokenType.NUMERIC);
 		}

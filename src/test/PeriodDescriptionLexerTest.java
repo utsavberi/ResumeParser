@@ -39,7 +39,7 @@ public class PeriodDescriptionLexerTest {
 	
 	@Test
 	public void testYear() {
-		String input = " 2015 2016 1992 1988 1800 2089 9999";
+		String input = " 2015 2016 1992 1988 1800 2089 1999";
 		PeriodDescriptionLexer lexer = new PeriodDescriptionLexer(new ByteArrayInputStream(input.getBytes()));
 		lexer.lex();
 		while(lexer.getCurrentToken().getTokenType()!=TokenType.EOF){

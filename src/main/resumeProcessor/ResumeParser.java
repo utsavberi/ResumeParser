@@ -107,6 +107,11 @@ public class ResumeParser {
 	}
 
 	private void parseEducation() {
+		//give priority to "education" over academic
+		if(!lexer.getCurrentToken().value.equalsIgnoreCase("education")
+				&& !getResume().getEducation().isEmpty()){
+			return;
+		};
 		lexer.lex();
 		ArrayList<PeriodDescription> education =  extractPeriodList(TokenType.EDUCATION);
 		getResume().setEducation(education);
@@ -148,7 +153,7 @@ public class ResumeParser {
 
 	public static void main(String arg[]) {
 		try {
-			ResumeParser parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/resume5")));
+			ResumeParser parser = new ResumeParser(new ResumeLexer(new FileInputStream("testData/resume6")));
 			parser.parse();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
