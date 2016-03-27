@@ -17,8 +17,16 @@ public class DateRange{
 	
 	@Override
 	public boolean equals(Object other){
+		
 		DateRange that = (DateRange) other;
-		return (that.dateStart.equals(this.dateStart) && that.dateEnd.equals(this.dateEnd));
+		if(that.dateStart == null && this.dateStart == null 
+				&& this.dateEnd==null && that.dateEnd == null) return true;
+		if(that.dateStart==null && this.dateStart == null ) 
+			return this.dateEnd.equals(that.dateEnd);
+		if(that.dateEnd==null && this.dateEnd == null ) 
+			return this.dateStart.equals(that.dateStart);
+		
+		return (that.dateStart .equals(this.dateStart) && that.dateEnd.equals(this.dateEnd));
 	}
 	
 	@Override

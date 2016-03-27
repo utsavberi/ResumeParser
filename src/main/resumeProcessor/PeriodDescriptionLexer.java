@@ -39,7 +39,31 @@ public class PeriodDescriptionLexer implements Lexer {
 				+ "|.?oct(ober)?[’'`]\\d{2,4}.?"
 				+ "|.?nov(ember)?[’'`]\\d{2,4}.?"
 				+ "|.?dec(ember)?[’'`]\\d{2,4}.?")){
-			token = new Token(word, TokenType.MONTH_YEAR);
+			token = new Token(word.replaceAll("[()-]", ""), TokenType.MONTH_YEAR);
+		}
+		else if(word.matches("[89][0-9][)(-]?")){
+			word = word.replaceAll("[()-]", "");
+//			if(Integer.parseInt(word)>=50){
+				word = "19"+word;
+//			}
+//			else{word = "20"+word;}
+			token = new Token(word,TokenType.YEAR);
+
+		}
+		else if(word.matches("[012][0-9][)(-]?")){
+			word = word.replaceAll("[()-]", "");
+//			if(Integer.parseInt(word)>=50){
+//				word = "19"+word;
+//			}
+//			else{
+				word = "20"+word;
+//				}
+			token = new Token(word,TokenType.YEAR);
+
+		}
+		//02/08/13
+		else if(word.matches("\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}")){
+			token = new Token(word,TokenType.DATE);
 		}
 		else if(word.toLowerCase().matches(".?jan(uary)?.?|.?feb(ruary)?.?"
 				+ "|.?mar(ch)?.?|.?apr(il)?.?"
@@ -63,7 +87,7 @@ public class PeriodDescriptionLexer implements Lexer {
 			token = new Token(word,TokenType.ALPHA_NUMERIC);
 		}
 		
-//		System.out.println("period lexer "+getCurrentToken().getTokenType()+" :"+getCurrentToken().value);
+		System.out.println("period lexer "+getCurrentToken().getTokenType()+" :"+getCurrentToken().value);
 
 	}
 	private static boolean isNumeric(String str)

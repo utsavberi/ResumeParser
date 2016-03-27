@@ -2,6 +2,7 @@ package main.resumeProcessor;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,10 +32,22 @@ public class PeriodDescriptionParser {
 		}
 		while(getCurrentTokenType() != TokenType.EOF);
 		
+		if(dateYearStart.isEmpty()==false && dateYearEnd.isEmpty()==false){
+			LocalDate startDate = getDateFromFields(dateYearStart,dateMonthStart);
+			LocalDate endDate =  getDateFromFields(dateYearEnd,dateMonthEnd);
+			
+			if(endDateIsSmallerThanStartDate(startDate, endDate)){
+				splitToTwoPeriodsAndAdd(startDate,endDate);
+			}
+			else{
+				experiences.add(new PeriodDescription(description,new DateRange(startDate,endDate)));
+			}
+			resetAllFields();
+		}
 		if(dateYearStart.isEmpty()==false ){
 			LocalDate endDate = getDateFromFields(dateYearStart,dateMonthStart);
 			LocalDate startDate = null;
-			endDate = LocalDate.of(endDate.getYear(), 8, 31);
+			endDate = LocalDate.of(endDate.getYear(), endDate.getMonth(),endDate.getMonthValue() == 2?28: 30);
 			
 			experiences.add(new PeriodDescription(description,new DateRange(startDate,endDate)));
 			resetAllFields();
@@ -60,6 +73,10 @@ public class PeriodDescriptionParser {
 		else if(dateYearStart.isEmpty() && getCurrentTokenType() == TokenType.YEAR){
 			dateYearStart = lexer.getCurrentToken().value;
 		}
+		else if(dateYearStart.isEmpty() && getCurrentTokenType() == TokenType.DATE){
+			dateYearStart = Integer.toString(new Date(lexer.getCurrentToken().value).getYear()+1900);
+			dateMonthStart =  monthIntToString((new Date(lexer.getCurrentToken().value).getMonth()));
+		}
 		else if(dateMonthEnd.isEmpty() && getCurrentTokenType() == TokenType.MONTH_STRING){
 			dateMonthEnd = lexer.getCurrentToken().value;
 		}
@@ -69,6 +86,10 @@ public class PeriodDescriptionParser {
 		}
 		else if(dateYearEnd.isEmpty() && getCurrentTokenType() == TokenType.YEAR){
 			dateYearEnd = lexer.getCurrentToken().value;
+		}
+		else if(dateYearEnd.isEmpty() && getCurrentTokenType() == TokenType.DATE){
+			dateYearEnd = Integer.toString(new Date(lexer.getCurrentToken().value).getYear()+1900);
+			dateMonthEnd =  monthIntToString((new Date(lexer.getCurrentToken().value).getMonth()));
 		}
 		else if(getCurrentTokenType()==TokenType.ALPHA_NUMERIC){
 			description+=lexer.getCurrentToken().value+" ";
@@ -114,7 +135,10 @@ public class PeriodDescriptionParser {
 	}
 
 	private LocalDate getDateFromFields(String year,String month) {
-		return LocalDate.of(Integer.parseInt(year),monthStringToInt(month),1);
+		try{return LocalDate.of(Integer.parseInt(year),monthStringToInt(month),30);}
+		catch(DateTimeException ex){
+			return LocalDate.of(Integer.parseInt(year),monthStringToInt(month),28);
+		}
 	}
 
 	private void resetAllFields() {
@@ -136,7 +160,7 @@ public class PeriodDescriptionParser {
 	}
 
 	private int monthStringToInt(String dateMonthStart) {
-		if(dateMonthStart.isEmpty()) return 1;
+		if(dateMonthStart.isEmpty()) return 6;
 		switch(dateMonthStart.toLowerCase().substring(0, 3)){
 			case "jan":return 1;
 			case "feb": return 2;
@@ -162,7 +186,7 @@ public class PeriodDescriptionParser {
 	public static void main(String arg[]) throws FileNotFoundException{
 		PeriodDescriptionParser parser = new PeriodDescriptionParser(
 				new PeriodDescriptionLexer(
-						new FileInputStream("testData/educationDataUtsav")));
+						new FileInputStream("testData/education/3")));
 		List<PeriodDescription> periods = parser.parse();
 		System.out.println(periods);
 		System.out.println("Size : "+periods.size());
