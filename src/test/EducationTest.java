@@ -80,5 +80,84 @@ public class EducationTest {
 		assertEquals(new DateRange(null,LocalDate.of(2000, 6, 30)),periods.get(3).getDateRange());
 		System.out.println(periods);
 	}
+	private LocalDate now() {
+		return LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonth(), 30);
+	}
+	@Test
+	public void test6() throws FileNotFoundException {
+		PeriodDescriptionParser parser = new PeriodDescriptionParser(
+				new PeriodDescriptionLexer(
+						new FileInputStream("testData/education/6")
+						));
+		List<PeriodDescription> periods = parser.parse();
+		System.out.println(periods);
+
+		assertEquals(3,periods.size());
+		assertEquals(new DateRange(LocalDate.of(2008, 9, 30),now()),periods.get(0).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(2003, 5, 30)),periods.get(1).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(2001, 5, 30)),periods.get(2).getDateRange());
+
+	}
+	
+	@Test
+	public void test7() throws FileNotFoundException {
+		PeriodDescriptionParser parser = new PeriodDescriptionParser(
+				new PeriodDescriptionLexer(
+						new FileInputStream("testData/education/7")
+						));
+		List<PeriodDescription> periods = parser.parse();
+		System.out.println(periods);
+
+		assertEquals(5,periods.size());
+		assertEquals(new DateRange(null,LocalDate.of(2013, 6, 30)),periods.get(0).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(2001, 5, 30)),periods.get(1).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(1999, 4, 30)),periods.get(2).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(1997, 3, 30)),periods.get(3).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(1995, 3, 30)),periods.get(4).getDateRange());
+
+	}
+	
+	@Test
+	public void test8() throws FileNotFoundException {
+		PeriodDescriptionParser parser = new PeriodDescriptionParser(
+				new PeriodDescriptionLexer(
+						new FileInputStream("testData/education/8")
+						));
+		List<PeriodDescription> periods = parser.parse();
+		System.out.println(periods);
+
+		assertEquals(3,periods.size());
+		assertEquals(new DateRange(LocalDate.of(2008, 6, 30),LocalDate.of(2010, 6, 30)),periods.get(0).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(2009, 6, 30)),periods.get(1).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(2000, 6, 30)),periods.get(2).getDateRange());
+
+	}
+	
+	@Test
+	public void test9() throws FileNotFoundException {
+		PeriodDescriptionParser parser = new PeriodDescriptionParser(
+				new PeriodDescriptionLexer(
+						new FileInputStream("testData/education/9")
+						));
+		List<PeriodDescription> periods = parser.parse();
+		System.out.println(periods);
+
+		assertEquals(1,periods.size());
+		assertEquals(new DateRange(LocalDate.of(2007, 6, 30),LocalDate.of(2011, 6, 30)),periods.get(0).getDateRange());
+	}
+	
+	@Test
+	public void test10() throws FileNotFoundException {
+		PeriodDescriptionParser parser = new PeriodDescriptionParser(
+				new PeriodDescriptionLexer(
+						new FileInputStream("testData/education/10")
+						));
+		List<PeriodDescription> periods = parser.parse();
+		System.out.println(periods);
+
+		assertEquals(2,periods.size());
+		assertEquals(new DateRange(null,LocalDate.of(2008, 6, 30)),periods.get(0).getDateRange());
+		assertEquals(new DateRange(null,LocalDate.of(2005,6,30)),periods.get(1).getDateRange());
+	}
 	
 }

@@ -32,7 +32,7 @@ public class ResumeParser {
 			parseEmail();
 		} else if ((getCurrentTokenType() == TokenType.PHONE)) {
 			parsePhone();
-		}  else if (getCurrentTokenType() == TokenType.URL) {
+		} else if (getCurrentTokenType() == TokenType.URL) {
 			parseUrl();
 		} else if (getCurrentTokenType() == TokenType.EDUCATION) {
 			parseEducation();
@@ -42,23 +42,22 @@ public class ResumeParser {
 			parseProjects();
 		} else if (getCurrentTokenType() == TokenType.SKILLS) {
 			parseSkills();
-		}
-		else if (getResume().getName() == null && getCurrentTokenType() == TokenType.ALPHA ) {
+		} else if (getResume().getName() == null && getCurrentTokenType() == TokenType.ALPHA) {
 			parseName();
-		} 
+		}
 	}
 
 	private void parseProjects() {
 		lexer.lex();
 		ArrayList<PeriodDescription> projects = extractPeriodList(TokenType.PROJECTS);
 		getResume().setProjects(projects);
-		checkCurrentTokenAndParse();		
+		checkCurrentTokenAndParse();
 	}
 
 	private ArrayList<PeriodDescription> extractPeriodList(TokenType tokenType) {
 		String periods = "";
-		while (isAlphaNumericToken() || getCurrentTokenType() ==  tokenType) {
-			periods +=lexer.getCurrentToken().value + " ";
+		while (isAlphaNumericToken() || getCurrentTokenType() == tokenType) {
+			periods += lexer.getCurrentToken().value + " ";
 			lexer.lex();
 		}
 		return parsePeriods(periods);
@@ -67,7 +66,7 @@ public class ResumeParser {
 	private ArrayList<PeriodDescription> parsePeriods(String periods) {
 		Lexer lexer = new PeriodDescriptionLexer(new ByteArrayInputStream(periods.getBytes()));
 		PeriodDescriptionParser parser = new PeriodDescriptionParser(lexer);
-		ArrayList<PeriodDescription> periodList =  parser.parse();
+		ArrayList<PeriodDescription> periodList = parser.parse();
 		return periodList;
 	}
 
@@ -79,7 +78,7 @@ public class ResumeParser {
 		lexer.lex();
 		String skillsStr = "";
 		while (isAlphaNumericToken() || getCurrentTokenType() == TokenType.SKILLS) {
-			skillsStr+=lexer.getCurrentToken().value + " ";
+			skillsStr += lexer.getCurrentToken().value + " ";
 			lexer.lex();
 		}
 		List<String> skillsList = parseSkills(skillsStr);
@@ -88,11 +87,11 @@ public class ResumeParser {
 	}
 
 	private List<String> parseSkills(String skillsStr) {
-		String [] skills = (skillsStr.split("[\\n,]"));
+		String[] skills = (skillsStr.split("[\\n,]"));
 		List<String> skillsList = new ArrayList<String>();
-		for(String skill: skills){
+		for (String skill : skills) {
 			skill = skill.trim();
-			if(skill.isEmpty()==false){
+			if (skill.isEmpty() == false) {
 				skillsList.add(skill);
 			}
 		}
@@ -100,22 +99,22 @@ public class ResumeParser {
 	}
 
 	private void parseExperience() {
-		ArrayList<PeriodDescription> experiences =  extractPeriodList(TokenType.EXPERIENCE);
+		ArrayList<PeriodDescription> experiences = extractPeriodList(TokenType.EXPERIENCE);
 		getResume().setExperience(experiences);
-		
+
 		checkCurrentTokenAndParse();
 	}
 
 	private void parseEducation() {
-		//give priority to "education" over academic
-		if(!lexer.getCurrentToken().value.equalsIgnoreCase("education")
-				&& !getResume().getEducation().isEmpty()){
+		// give priority to "education" over academic
+		if (!lexer.getCurrentToken().value.equalsIgnoreCase("education") && !getResume().getEducation().isEmpty()) {
 			return;
-		};
+		}
+		;
 		lexer.lex();
-		ArrayList<PeriodDescription> education =  extractPeriodList(TokenType.EDUCATION);
+		ArrayList<PeriodDescription> education = extractPeriodList(TokenType.EDUCATION);
 		getResume().setEducation(education);
-		
+
 		checkCurrentTokenAndParse();
 	}
 
@@ -148,7 +147,7 @@ public class ResumeParser {
 
 	private boolean isAlphaNumericToken() {
 		return getCurrentTokenType() == TokenType.ALPHA || getCurrentTokenType() == TokenType.ALPHA_NUMERIC
-				|| getCurrentTokenType() == TokenType.NUMERIC || getCurrentTokenType() == TokenType.NEW_LINE ;
+				|| getCurrentTokenType() == TokenType.NUMERIC;
 	}
 
 	public static void main(String arg[]) {
